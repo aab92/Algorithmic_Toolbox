@@ -1,23 +1,50 @@
 #include <iostream>
 
-void sortdenom(int* denom, int size){
-	int temarray[size] = {10,5,1};
+void sortdenom_naive(int* denom, int size){
+	int temarray[size] = {0};
 
+	int indexarr[size] = {0};
+	indexarr[0] = -1;
+	// Get maximum
 	
+	for (int ex=0; ex<size; ex++){
+		int max = 0;
+		for (int i=0; i<size; i++){
+			switch (ex){
+				case 0:
+					if (denom[i] > max){
+						max = denom[i];
+						indexarr[ex] = i;	
+					}
+				case 1:
+					if ((i != indexarr[ex-1]) && (denom[i] > max)){
+						max = denom[i];
+						indexarr[ex] = i;
+					}
+				case 2:	
+					if ((i != indexarr[ex-1]) && (i != indexarr[ex-2]) && (denom[i] > max)){
+						max = denom[i];
+						indexarr[ex] = i;
+					}
+			}	
+		}
+		temarray[ex] = max;
+	}
 
 
 	for (int i=0; i<size; i++){
 		denom[i] = temarray[i];
-		//std::cout << denom[i] << " " ;
+		std::cout << denom[i] << " " ;
 	}
-	//std::cout << std::endl;
+	std::cout << std::endl;
 }
 
 
 int get_change(int m) {
 	int denom[] = {1,5,10};
-	sortdenom(denom, 3);
-	int quanti[3] = {0}; 
+	int denom_size = 3;
+	sortdenom_naive(denom, denom_size);
+	int quanti[denom_size] = {0}; 
 	int counter=0;
 	while ( m > 0)
 	{
