@@ -10,23 +10,14 @@ void sortdenom_naive(int* denom, int size){
 	for (int ex=0; ex<size; ex++){
 		int max = 0;
 		for (int i=0; i<size; i++){
-			switch (ex){
-				case 0:
-					if (denom[i] > max){
-						max = denom[i];
-						indexarr[ex] = i;	
-					}
-				case 1:
-					if ((i != indexarr[ex-1]) && (denom[i] > max)){
+				bool condition = true;
+				for (int looper=1; looper < ex+1; looper++){
+					condition = condition && (i != indexarr[ex-looper]);
+				}
+				if (condition && (denom[i] > max)){
 						max = denom[i];
 						indexarr[ex] = i;
-					}
-				case 2:	
-					if ((i != indexarr[ex-1]) && (i != indexarr[ex-2]) && (denom[i] > max)){
-						max = denom[i];
-						indexarr[ex] = i;
-					}
-			}	
+				}
 		}
 		temarray[ex] = max;
 	}
@@ -34,9 +25,9 @@ void sortdenom_naive(int* denom, int size){
 
 	for (int i=0; i<size; i++){
 		denom[i] = temarray[i];
-		std::cout << denom[i] << " " ;
+		//std::cout << denom[i] << " " ;
 	}
-	std::cout << std::endl;
+	//std::cout << std::endl;
 }
 
 
