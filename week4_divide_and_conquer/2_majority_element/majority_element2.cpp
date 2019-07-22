@@ -14,6 +14,7 @@ struct Ocurrences{
 
 int get_majority_element(const vector<int> &a, int left, int right, vector<Ocurrences> &ocurrences,const int &thres) {
   bool newvalue = true;
+  bool firstcomp = true;
   if (left == right) return 0;
   if (left + 1 == right) {
     newvalue = true;
@@ -23,11 +24,10 @@ int get_majority_element(const vector<int> &a, int left, int right, vector<Ocurr
         if(ocurrences[i].numberapperances > thres)
           return 1;
         newvalue = false;
-        //std::cout << "got here" << std::endl;
         break;
       }
     }
-    if (newvalue){
+    if (newvalue && firstcomp){
         Ocurrences oc;
         oc.value = a[left];
         oc. numberapperances = 1;
@@ -36,14 +36,16 @@ int get_majority_element(const vector<int> &a, int left, int right, vector<Ocurr
     return 0;
   }
 
-  int midpoint = (left + right)/2;
+  int  midpoint = (left + right)/2;
+
   //std::cout << "did this1" << std::endl;
-  int subans = get_majority_element(a, left, midpoint, ocurrences, thres);
+  int subans = get_majority_element(a, midpoint, right, ocurrences, thres);
   int subans2 = 0;
+  firstcomp = false;
   if (subans)
     return 1;
   else
-    subans2 = get_majority_element(a, midpoint, right, ocurrences, thres);
+    subans2 = get_majority_element(a, left, midpoint, ocurrences, thres);
   //std::cout << "did this" << std::endl;
   return (subans || subans2);
 }
