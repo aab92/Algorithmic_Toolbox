@@ -9,7 +9,51 @@ long long get_number_of_inversions(vector<int> &a, vector<int> &b, size_t left, 
   size_t ave = left + (right - left) / 2;
   number_of_inversions += get_number_of_inversions(a, b, left, ave);
   number_of_inversions += get_number_of_inversions(a, b, ave, right);
-  //write your code here
+
+  // Get number of inversions
+  for(int i=left; i < ave; ++i){
+    for(int j=ave; j<right; ++j){
+      if(a[i]>a[j]){
+        number_of_inversions++;
+      }
+      else
+          break;
+    }
+  }
+  //Merge
+  int i = left;
+  int bind = left;
+  int j = ave;
+  while(bind<right){
+    if(a[i]<a[j]){
+      b[bind] = a[i];
+      i++;
+      bind++;
+    }
+    else{
+      b[bind] = a[j];
+      j++;
+      bind++;
+    }
+    if(j==right)
+      while(i < ave){
+        b[bind] = a[i];
+        i++;
+        bind++;
+      }
+    if(i==ave)
+      while(j < right){
+        b[bind] = a[j];
+        j++;
+        bind++;
+      }
+  }
+  for(int i=left; i< right; ++i){
+    a[i] = b[i];
+    //std::cout << a[i] << " ";
+  }
+  //std::cout << std::endl;
+
   return number_of_inversions;
 }
 
