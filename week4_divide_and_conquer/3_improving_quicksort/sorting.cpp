@@ -6,7 +6,7 @@
 using std::vector;
 using std::swap;
 
-#define DEBUG ;
+//#define DEBUG ;
 
 int partition2(vector<int> &a, int l, int r) {
   int x = a[l];
@@ -50,20 +50,16 @@ void randomized_quick_sort(vector<int> &a, int l, int r) {
   int counteq = 0;
   int m = partition3(a, l, r, counteq);
 
-  std::cout << k << std::endl;
-  std::cout << m << std::endl;
-  std::cout << counteq << std::endl;
-
-  for(int i=l; i<=r; ++i)
+/*  for(int i=l; i<=r; ++i)
     std::cout << a[i] << " ";
-  std::cout << std::endl;
+  std::cout << std::endl;*/
 
   randomized_quick_sort(a, l, m - 1);
   randomized_quick_sort(a, m + counteq, r);
 
-  for(int i=l; i<=r; ++i)
+/*  for(int i=l; i<=r; ++i)
     std::cout << a[i] << " ";
-  std::cout << std::endl;
+  std::cout << std::endl;*/
 }
 
 void test_solution(){
