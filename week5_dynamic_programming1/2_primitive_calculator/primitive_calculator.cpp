@@ -4,25 +4,10 @@
 
 using std::vector;
 
-#define DEBUG ;
+//#define DEBUG ;
 
-vector<int> optimal_sequence(int n) {
-  std::vector<int> sequence;
-  while (n >= 1) {
-    sequence.push_back(n);
-    if (n % 3 == 0) {
-      n /= 3;
-    } else if (n % 2 == 0) {
-      n /= 2;
-    } else {
-      n = n - 1;
-    }
-  }
-  reverse(sequence.begin(), sequence.end());
-  return sequence;
-}
 
-int optimal_sequence_dp(int n) {
+vector<int> optimal_number_operations(int n) {
   int poss_operations = 3;
   std::vector<int> sequence;
   std::vector<int> optimal_numOp(n,1e5);
@@ -57,25 +42,67 @@ int optimal_sequence_dp(int n) {
     optimal_numOp[i-1] = min + 1;
   }
 
-  for(int i=0; i<n; ++i)
+/*  for(int i=0; i<n; ++i)
     std::cout << optimal_numOp[i] << " ";
   std::cout << std::endl;
-
-  return optimal_numOp[n-1];
+*/
+  return optimal_numOp;
 }
+
+vector<int> optimal_sequence(int n) {
+  std::vector<int> sequence;
+  std::vector<int> op_num_op = optimal_number_operations(n);  // vector contains the optimal number of operations for all numbers from 1 to n
+  int poss_operations = 3;
+  std::vector<int> prev_opt(poss_operations); // previous optimus
+
+  while (n >= 1) {
+    sequence.push_back(n);
+    if (n % 3 == 0) {
+      prev_opt[0] = n / 3;
+    }
+    else
+      prev_opt[0] = 1e5;
+    if (n % 2 == 0) {
+      prev_opt[1] = n / 2;
+    }
+    else
+      prev_opt[1] = 1e5;
+    if(n-1>=1){
+      prev_opt[2] = n - 1;
+    }
+    else
+      prev_opt[2] = 1e5;
+    // Find the optimal alternative
+    int min = 1e5;
+    int minindex;
+    for (int k=0; k<poss_operations; ++k){
+      if(prev_opt[k]!= 1e5 && op_num_op[prev_opt[k]-1] < min){
+        min = op_num_op[prev_opt[k]-1];
+        minindex = k;
+      }
+    }
+    if (min == 1e5)
+      break;
+
+    n = prev_opt[minindex];
+  }
+  reverse(sequence.begin(), sequence.end());
+  return sequence;
+}
+
 
 int main() {
   int n;
   std::cin >> n;
 
 #ifdef DEBUG
-  std::cout << optimal_sequence_dp(n) << std::endl;
+//  std::cout << optimal_number_operations(n) << std::endl;
 #else
-/*  vector<int> sequence = optimal_sequence(n);
+  vector<int> sequence = optimal_sequence(n);
   std::cout << sequence.size() - 1 << std::endl;
   for (size_t i = 0; i < sequence.size(); ++i) {
     std::cout << sequence[i] << " ";
   }
-*/
+
 #endif
 }
